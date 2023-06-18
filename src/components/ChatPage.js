@@ -10,24 +10,31 @@ const ChatPage = () => {
       }
    },[navigate])
    const [searchToggle, setSearchToggle] = useState(false);
-   const [searchText, setSearchText] = useState("");
+   const [searchData, setSearchData] = useState([]);
    const handleSearchToggle = ()=>{
-      setSearchToggle(true);
+      setSearchToggle(pre => !pre);
    }
-   const handleSearch = async() =>{
-      console.log("sairam");
+   const handleSearchUser =async (value) =>{
+      console.log(value._id);
+      const userData = localStorage.getItem("userInfo");
+      const token = userData.token;
+      const response = await fetch('http://localhost:5000/auth/chat/', {method: 'POST', headers:{
+         "Content-Type": "application/json",
+         "Authorization":`Bearer ${token}`,
+      }, body: JSON.stringify({userId: value._id, })
+   });
+   const data = await response.json();
+   console.log(data);
+   }
+   const handleSearchText = async (e) =>{
       const userData = localStorage.getItem("userInfo");
       const token = JSON.parse(userData).token;
-      const response = await fetch(`http://localhost:5000/auth/user/?search=${searchText}`, {method: "GET", headers:{"Content-Type": "application/json", "Authorization":`Bearer ${token}`}});
-      console.log(response);
-   }
-   const handleSearchText = (e) =>{
-      setSearchText(e.target.value);
+      const response = await fetch(`http://localhost:5000/auth/user/?search=${e.target.value}`, {method: "GET", headers:{"Content-Type": "application/json", "Authorization":`Bearer ${token}`}});
+      const data = await response.json();
+      setSearchData(data);
    }
   return (
    <>
-   
-
 <div className="flex-1 p:2 sm:p-6 justify-between flex flex-col h-screen">
    <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
       <div className="relative flex items-center space-x-4">
@@ -47,19 +54,22 @@ const ChatPage = () => {
          </div>
       </div>
       <div className="flex items-center gap-2">
-         {searchToggle && (<div className={`w-full gap-2 h-5 flex items-center justify-end`}>
-            <input type="text" className={`outline-none border-b-2 border-x-0 border-t-0 border-gray-500`} onChange={handleSearchText} value={searchText}/>
-            <button type="button" onClick={handleSearch} className="inline-flex items-center justify-center rounded-lg  h-10 w-10 transition duration-500 ease-in-out text-gray-500 ">
+
+         {searchToggle && (<div className={`w-full gap-2 h-auto flex items-center justify-end`}>
+            <div className=" flex flex-col justify-start h-8 border-red-500 w-full ">
+            <input type="text" className={`outline-none border-b-2 border-x-0 border-t-0 border-gray-500`} onChange={handleSearchText}/>
+            {searchData.map((value, index)=>{
+               return(
+               <span className='py-1 px-2 bg-gray-400 border-2 boder-red-500 rounded-lg' key={index} onClick={()=>{handleSearchUser(value)}}>{value.name}</span>)
+            })}
+            </div>
+
+         </div>)}
+         <button type="button" onClick={handleSearchToggle} className="w-full flex items-center justify-center rounded-lg  h-10 text-gray-500">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
          </button>
-         </div>)}
-         {!searchToggle && <button type="button" onClick={handleSearchToggle} className="w-full flex items-center justify-center rounded-lg  h-10 text-gray-500">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
-               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
-         </button>}
          <button type="button" className=" w-full flex items-center justify-center rounded-lg  h-10 text-gray-500">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
