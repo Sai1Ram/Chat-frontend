@@ -1,149 +1,149 @@
-import React, { useEffect, useState } from 'react'
-import maleUser from '../assets/images/male-user.jpg'
-import femaleUser from '../assets/images/female-user.jpg'
-import { useNavigate } from 'react-router-dom'
-const ChatPage = () => {
-   const navigate = useNavigate();
-   useEffect(()=>{
-      if(!localStorage.getItem("userInfo")){
-         navigate("/signIn");
-      }
-   },[navigate])
-   const [searchToggle, setSearchToggle] = useState(false);
-   const [searchData, setSearchData] = useState([]);
-   const handleSearchToggle = ()=>{
-      setSearchToggle(pre => !pre);
-   }
-   const handleSearchUser =async (value) =>{
-      console.log(value._id);
-      const userData = localStorage.getItem("userInfo");
-      const token = userData.token;
-      const response = await fetch('http://localhost:5000/auth/chat/', {method: 'POST', headers:{
-         "Content-Type": "application/json",
-         "Authorization":`Bearer ${token}`,
-      }, body: JSON.stringify({userId: value._id, })
-   });
-   const data = await response.json();
-   console.log(data);
-   }
-   const handleSearchText = async (e) =>{
-      const userData = localStorage.getItem("userInfo");
-      const token = JSON.parse(userData).token;
-      const response = await fetch(`http://localhost:5000/auth/user/?search=${e.target.value}`, {method: "GET", headers:{"Content-Type": "application/json", "Authorization":`Bearer ${token}`}});
-      const data = await response.json();
-      setSearchData(data);
-   }
+import React, { useEffect, useState, useContext } from "react";
+import MessCompo from "./miscellaneous/MessCompo";
+import SideBar from "./miscellaneous/SideBar";
+
+function ChatPage2() {
+  
+  
+  const [allFriend, setAllFriend] = useState([]);
+  
+  // const fetchAllChatUser = async ()=>{
+  //   const userData = localStorage.getItem("userInfo");
+  //   const token = JSON.parse(userData).token;
+  //   const response = await fetch("http://localhost:5000/auth/chat", {method: "GET", headers:{
+  //     "Content-Type": "application/json",
+  //     Authorization: `Bearer ${token}`,
+  //   }});
+  //   const data = await response.json();
+  //   setAllFriend(data)
+  // }
+  // useEffect(()=>{fetchAllChatUser()}, [])
+  
+
   return (
-   <>
-<div className="flex-1 p:2 sm:p-6 justify-between flex flex-col h-screen">
-   <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
-      <div className="relative flex items-center space-x-4">
-         <div className="relative">
-            <span className="absolute text-green-500 right-0 bottom-0">
-               <svg width="20" height="20">
-                  <circle cx="8" cy="8" r="8" fill="currentColor"></circle>
-               </svg>
-            </span>
-         <img src={femaleUser} alt="" className=" sm:w-16 h-10 sm:h-16 rounded-full"/>
-         </div>
-         <div className="flex flex-col leading-tight">
-            <div className="text-2xl mt-1 flex items-center">
-               <span className="text-gray-700 mr-3">Anderson Vanhron</span>
+    <>
+      <div className="flex h-screen antialiased text-gray-800">
+        <div className="flex flex-row h-full w-full overflow-x-hidden">
+          <SideBar/>
+          <div className="flex flex-col flex-auto h-full p-6 overflow-hidden">
+            <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4">
+              <div className="flex flex-col h-full overflow-x-auto mb-4">
+                <div className="flex flex-col h-full">
+                  <div className="grid grid-cols-12 gap-y-2">
+                    <MessCompo
+                      message={"Hey How are you today?"}
+                      left={true}
+                      right={false}
+                    />
+                    <MessCompo
+                      message={"Hey How are you today?"}
+                      left={false}
+                      right={true}
+                    />
+                    <MessCompo
+                      message={"Hey How are you today?"}
+                      left={true}
+                      right={false}
+                    />
+                    <MessCompo
+                      message={"Hey How are you today?"}
+                      left={false}
+                      right={true}
+                    />
+                    <MessCompo
+                      message={"Hey How are you today?"}
+                      left={true}
+                      right={false}
+                    />
+                    <MessCompo
+                      message={"Hey How are you today?"}
+                      left={false}
+                      right={true}
+                    />
+                    <MessCompo
+                      message={"Hey How are you today?"}
+                      left={true}
+                      right={false}
+                    />
+                    <MessCompo
+                      message={"Hey How are you today?"}
+                      left={false}
+                      right={true}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
+                <div>
+                  <button className="flex items-center justify-center text-gray-400 hover:text-gray-600">
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
+                <div className="flex-grow ml-4">
+                  <div className="relative w-full">
+                    <input
+                      type="text"
+                      className="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
+                    />
+                    <button className="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600">
+                      <svg
+                        className="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div className="ml-4">
+                  <button className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0">
+                    <span>Send</span>
+                    <span className="ml-2">
+                      <svg
+                        className="w-4 h-4 transform rotate-45 -mt-px"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                        ></path>
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+              </div>
             </div>
-            <span className="text-lg text-gray-600">Junior Developer</span>
-         </div>
+          </div>
+        </div>
       </div>
-      <div className="flex items-center gap-2">
-
-         {searchToggle && (<div className={`w-full gap-2 h-auto flex items-center justify-end`}>
-            <div className=" flex flex-col justify-start h-8 border-red-500 w-full ">
-            <input type="text" className={`outline-none border-b-2 border-x-0 border-t-0 border-gray-500`} onChange={handleSearchText}/>
-            {searchData.map((value, index)=>{
-               return(
-               <span className='py-1 px-2 bg-gray-400 border-2 boder-red-500 rounded-lg' key={index} onClick={()=>{handleSearchUser(value)}}>{value.name}</span>)
-            })}
-            </div>
-
-         </div>)}
-         <button type="button" onClick={handleSearchToggle} className="w-full flex items-center justify-center rounded-lg  h-10 text-gray-500">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
-               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
-         </button>
-         <button type="button" className=" w-full flex items-center justify-center rounded-lg  h-10 text-gray-500">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
-               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-            </svg>
-         </button>
-         <button type="button" className="w-full flex items-center justify-center rounded-lg h-10  text-gray-500">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
-               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-            </svg>
-         </button>
-      </div>
-   </div>
-   <div id="messages" className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
-      <div className="chat-message">
-         <div className="flex items-end">
-            <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
-               <div><span className="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-300 text-gray-600">Can be verified on any platform using docker</span></div>
-            </div>
-            <img src={femaleUser} alt="My profile" className="w-10 h-10 rounded-full order-1"/>
-         </div>
-      </div>
-      <div className="chat-message">
-         <div className="flex items-end justify-end">
-            <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end">
-               <div><span className="px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white ">Your error message says permission denied, npm global installs must be given root privileges.</span></div>
-            </div>
-            <img src={maleUser} alt="My profile" className="w-10 h-10 rounded-full order-2"/>
-         </div>
-      </div>
-
-     
-   </div>
-   <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
-      <div className="relative flex">
-         <span className="absolute inset-y-0 flex items-center">
-            <button type="button" className="inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none">
-               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6 text-gray-600">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
-               </svg>
-            </button>
-         </span>
-         <input type="text" placeholder="Write your message!" className="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-md py-3"/>
-         <div className="absolute right-0 items-center inset-y-0 hidden sm:flex">
-            <button type="button" className="inline-flex items-center justify-center rounded-full h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none">
-               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6 text-gray-600">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
-               </svg>
-            </button>
-            <button type="button" className="inline-flex items-center justify-center rounded-full h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none">
-               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6 text-gray-600">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
-               </svg>
-            </button>
-            <button type="button" className="inline-flex items-center justify-center rounded-full h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none">
-               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6 text-gray-600">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-               </svg>
-            </button>
-            <button type="button" className="inline-flex items-center justify-center rounded-lg px-4 py-3 transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none">
-               <span className="font-bold">Send</span>
-               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-6 w-6 ml-2 transform rotate-90">
-                  <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
-               </svg>
-            </button>
-         </div>
-      </div>
-   </div>
-</div>
-
-
-   
-   </>
-  )
+    </>
+  );
 }
 
-export default ChatPage
+export default ChatPage2;

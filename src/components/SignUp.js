@@ -1,7 +1,7 @@
 import React, { useReducer, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Toast from "./Toast";
-import LoadingBtn from "./LoadingBtn";
+import Toast from "./miscellaneous/Toast";
+import LoadingBtn from "./miscellaneous/LoadingBtn";
 
 // ------------------- REDUCERE FUNCTION -------------------
 const reducer = (submit, action) => {

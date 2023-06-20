@@ -1,7 +1,7 @@
-import React, { useState, useReducer } from "react";
+import React, { useState, useReducer, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Toast from "./Toast";
-import LoadingBtn from "./LoadingBtn";
+import Toast from "./miscellaneous/Toast";
+import LoadingBtn from "./miscellaneous/LoadingBtn";
 
 // ------------------- REDUCERE FUNCTION -------------------
 const reducer = (submit, action) => {
@@ -47,6 +47,12 @@ function SignIn() {
   // --------------------------- NAVIGATION HOOKS ---------------------------
 
   const navigate = useNavigate();
+  useEffect(()=>{
+    const userData = JSON.parse(localStorage.getItem("userInfo"));
+    if(userData){
+      navigate("/chats")
+    }
+  }, [navigate])
   // --------------------------- FUNCTION FOR THE CHANGE IN INPUT FIELD ---------------------------
 
   const handleOnChange = (e) => {
