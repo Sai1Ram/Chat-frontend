@@ -74,7 +74,7 @@ function SignIn() {
  const handleOnSubmit = async () => {
   dispatch({ type: "submitClick", payload: true });
   try {
-  const response = await fetch("http://localhost:5000/auth/user/signIn", {method: "POST", headers: {
+  const response = await fetch("https://chat-apis.onrender.com/auth/user/signIn", {method: "POST", headers: {
     "Content-Type": "application/json",
   }, body: JSON.stringify(submit.userData)});
   const data = await response.json();

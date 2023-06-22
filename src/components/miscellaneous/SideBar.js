@@ -10,7 +10,7 @@ const SideBar = () => {
   useEffect(() => {
     const fetchAllChatUser = async () => {
       const token = user.token;
-      const response = await fetch("http://localhost:5000/auth/chat", {
+      const response = await fetch("/auth/chat", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -26,7 +26,7 @@ const SideBar = () => {
     setIsLoading(true);
     const token = user.token;
     const response = await fetch(
-      `http://localhost:5000/auth/user/?search=${e.target.value}`,
+      `https://chat-apis.onrender.com/auth/user/?search=${e.target.value}`,
       {
         method: "GET",
         headers: {

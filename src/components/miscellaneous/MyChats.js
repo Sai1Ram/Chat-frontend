@@ -9,13 +9,13 @@ const Friends = ({ friend, friendChat }) => {
   }
   const openChat = async (userId)=>{
     const token = user.token;
-    const chatResponse = await fetch("http://localhost:5000/auth/chat", {method: 'POST', headers:{
+    const chatResponse = await fetch("https://chat-apis.onrender.com/auth/chat", {method: 'POST', headers:{
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },body: JSON.stringify({ userId })
   });
   const chatData = await chatResponse.json();
-  const messageResponse = await fetch(`http://localhost:5000/auth/message/${chatData._id}`, {method: "GET", headers:{
+  const messageResponse = await fetch(`https://chat-apis.onrender.com/auth/message/${chatData._id}`, {method: "GET", headers:{
     "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
   }});
