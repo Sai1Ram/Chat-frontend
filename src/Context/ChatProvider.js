@@ -10,7 +10,7 @@ function ChatProvider({children}) {
     useEffect(()=>{
         const userData = JSON.parse(localStorage.getItem("userInfo"));
         setUser(userData)
-        if (!userData && location.pathname !== "/signIn") {
+        if (!userData && location.pathname !== "/") {
           navigate("/signIn");
         }
     },[navigate, location])
