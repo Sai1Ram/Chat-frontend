@@ -9,7 +9,7 @@ const MessCompo = ({ left, right, message }) => {
             A
           </div>
           <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
-            <div>Hey How are you today?</div>
+            <div>{message}</div>
           </div>
         </div>
       </div>
