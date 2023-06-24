@@ -9,6 +9,11 @@ function ChatPage2() {
   
   const {user} = ChatState();
   const navigate = useNavigate();
+  useEffect(()=>{
+    if(!user){
+      navigate("/signIn");
+    }
+  },[user]);
   const logout = () => {
     localStorage.removeItem("userInfo");
     navigate("/signIn")
