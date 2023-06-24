@@ -1,4 +1,4 @@
-import React, { userEffect } from "react";
+import React, { useEffect } from "react";
 
 import SideBar from "./miscellaneous/SideBar";
 import { ChatState } from "../Context/ChatProvider";
