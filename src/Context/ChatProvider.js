@@ -13,7 +13,7 @@ function ChatProvider({children}) {
         if (!userData && !location.pathname === "/") {
           navigate("/signIn");
         }
-    },[navigate])
+    },[navigate, location])
     
   return(
   <ChatContext.Provider value={{user, setUser, selectedChat, setSelectedChat,selectedChatMessage, setSelectedChatMessage}}>
