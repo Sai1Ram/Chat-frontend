@@ -13,7 +13,7 @@ function ChatPage2() {
     if(!user){
       navigate("/signIn");
     }
-  },[user, navigate]);
+  },[navigate, user]);
   const logout = () => {
     localStorage.removeItem("userInfo");
     navigate("/signIn")
