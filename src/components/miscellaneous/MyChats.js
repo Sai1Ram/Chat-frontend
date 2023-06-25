@@ -37,7 +37,8 @@ const Friends = ({ friend, friendChat }) => {
         }else if(friendChat.isGroup){
           openGroupChat()
         }else{
-          console.log("none");
+          openChat(friendChat.users[1]._id)
+          console.log(friendChat.users[1]._id);
         }
         }}>
         <div className="flex items-center justify-center h-8 w-8 bg-purple-200 rounded-full">

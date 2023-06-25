@@ -80,6 +80,7 @@ function SignIn() {
   const response = await fetch(`${api}/auth/user/signIn`, {method: "POST", headers: {
     "Content-Type": "application/json",
   }, body: JSON.stringify(submit.userData)});
+  console.log(api);
   const data = await response.json();
   if(response.status === 200)  localStorage.setItem("userInfo", JSON.stringify(data));
   dispatch({ type: "submitClick", payload: false });

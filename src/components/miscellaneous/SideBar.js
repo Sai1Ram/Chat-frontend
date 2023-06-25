@@ -11,6 +11,7 @@ const SideBar = () => {
 
   useEffect(() => {
     const fetchAllChatUser = async () => {
+      setIsLoading(true);
       const token = user.token;
       const response = await fetch(`${api}/auth/chat`, {
         method: "GET",
@@ -20,6 +21,7 @@ const SideBar = () => {
         },
       });
       const data = await response.json();
+      setIsLoading(false);
       setAllFriend(data);
     };
     fetchAllChatUser();
