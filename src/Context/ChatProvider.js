@@ -8,12 +8,12 @@ function ChatProvider({children}) {
     const [selectedChat, setSelectedChat] = useState();
     const [selectedChatMessage, setSelectedChatMessage] = useState([]);
     useEffect(()=>{
-        const userData = JSON.parse(localStorage.getItem("userInfo"));
-        setUser(userData)
-        if (!userData && location.pathname !== "/") {
-          navigate("/signIn");
-        }
-    },[navigate, location])
+      const userData = JSON.parse(localStorage.getItem("userInfo"));
+      setUser(userData)
+      if (!userData && !location.pathname === "/") {
+        navigate("/signIn");
+      }
+  },[navigate, location])
     
   return(
   <ChatContext.Provider value={{user, setUser, selectedChat, setSelectedChat,selectedChatMessage, setSelectedChatMessage}}>

@@ -1,8 +1,10 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Toast from "./miscellaneous/Toast";
 import LoadingBtn from "./miscellaneous/LoadingBtn";
+import { ChatState } from "../Context/ChatProvider";
 
+const api = process.env.REACT_APP_API;
 // ------------------- REDUCERE FUNCTION -------------------
 const reducer = (submit, action) => {
   switch (action.type) {
@@ -28,6 +30,8 @@ const reducer = (submit, action) => {
   }
 };
 function SignUp() {
+
+  const {user} = ChatState();
   // --------------------------- REDUCER HOOK ---------------------------
 
   const [submit, dispatch] = useReducer(reducer, {
@@ -47,6 +51,11 @@ function SignUp() {
 
   // --------------------------- NAVIGATE HOOKS --------------------------- 
   const navigate = useNavigate();
+  useEffect(()=>{
+    if(user){
+      navigate("/chats")
+    }
+  }, [user, navigate])
 
   // --------------------------- FUNCTION FOR THE CHANGE IN INPUT FIELD ---------------------------
 
@@ -63,7 +72,7 @@ function SignUp() {
   const handleOnSubmit = async () => {
     dispatch({ type: "submitClick", payload: true });
     try {
-      const response = await fetch("https://chat-apis.onrender.com/auth/user/signUp", {
+      const response = await fetch(`${api}/auth/user/signUp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -2,7 +2,9 @@ import React, { useState, useReducer, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Toast from "./miscellaneous/Toast";
 import LoadingBtn from "./miscellaneous/LoadingBtn";
+import { ChatState } from "../Context/ChatProvider";
 
+const api = process.env.REACT_APP_API;
 // ------------------- REDUCERE FUNCTION -------------------
 const reducer = (submit, action) => {
   switch (action.type) {
@@ -28,6 +30,8 @@ const reducer = (submit, action) => {
   }
 };
 function SignIn() {
+
+  const {user} = ChatState()
   // --------------------------- REDUCER HOOK ---------------------------
 
   const [submit, dispatch] = useReducer(reducer, {
@@ -48,11 +52,10 @@ function SignIn() {
 
   const navigate = useNavigate();
   useEffect(()=>{
-    const userData = JSON.parse(localStorage.getItem("userInfo"));
-    if(userData){
+    if(user){
       navigate("/chats")
     }
-  }, [navigate])
+  }, [user, navigate])
   // --------------------------- FUNCTION FOR THE CHANGE IN INPUT FIELD ---------------------------
 
   const handleOnChange = (e) => {
@@ -74,7 +77,7 @@ function SignIn() {
  const handleOnSubmit = async () => {
   dispatch({ type: "submitClick", payload: true });
   try {
-  const response = await fetch("https://chat-apis.onrender.com/auth/user/signIn", {method: "POST", headers: {
+  const response = await fetch(`${api}/auth/user/signIn`, {method: "POST", headers: {
     "Content-Type": "application/json",
   }, body: JSON.stringify(submit.userData)});
   const data = await response.json();

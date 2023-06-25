@@ -1,26 +1,31 @@
 import React from "react";
 import { ChatState } from "../../Context/ChatProvider";
 
-
+const api = process.env.REACT_APP_API;      // backend api 
 const Friends = ({ friend, friendChat }) => {
-  const {user, setSelectedChat, setSelectedChatMessage} = ChatState();
+  const {user, setSelectedChat, setSelectedChatMessage} = ChatState();      // context
   const openGroupChat = async ()=>{
     console.log("group");
   }
+
+// to open the chat of one friend
   const openChat = async (userId)=>{
     const token = user.token;
-    const chatResponse = await fetch("https://chat-apis.onrender.com/auth/chat", {method: 'POST', headers:{
+    const chatResponse = await fetch(`${api}/auth/chat`, {method: 'POST', headers:{
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },body: JSON.stringify({ userId })
   });
   const chatData = await chatResponse.json();
-  const messageResponse = await fetch(`https://chat-apis.onrender.com/auth/message/${chatData._id}`, {method: "GET", headers:{
+  console.log(chatData);
+
+// fetching all the message of the chat
+  const messageResponse = await fetch(`${api}/auth/message/${chatData._id}`, {method: "GET", headers:{
     "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
   }});
   const messageData = await messageResponse.json();
-  // console.log(messageData);
+  console.log(messageData);
   setSelectedChatMessage(messageData);
   setSelectedChat(chatData)
   }
@@ -29,7 +34,6 @@ const Friends = ({ friend, friendChat }) => {
       <button className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2" onClick={()=>{
         if(friend){
           openChat(friend._id)
-          console.log(friend._id);
         }else if(friendChat.isGroup){
           openGroupChat()
         }else{

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import MyChats from "./MyChats";
 import { ChatState } from "../../Context/ChatProvider";
+
+const api = process.env.REACT_APP_API;
 const SideBar = () => {
   const { user } = ChatState();
   const [searchData, setSearchData] = useState([]);
@@ -10,7 +12,7 @@ const SideBar = () => {
   useEffect(() => {
     const fetchAllChatUser = async () => {
       const token = user.token;
-      const response = await fetch("/auth/chat", {
+      const response = await fetch(`${api}/auth/chat`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -26,7 +28,7 @@ const SideBar = () => {
     setIsLoading(true);
     const token = user.token;
     const response = await fetch(
-      `https://chat-apis.onrender.com/auth/user/?search=${e.target.value}`,
+      `${api}/auth/user/?search=${e.target.value}`,
       {
         method: "GET",
         headers: {

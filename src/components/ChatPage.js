@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import SideBar from "./miscellaneous/SideBar";
 import { ChatState } from "../Context/ChatProvider";
@@ -9,8 +9,14 @@ function ChatPage2() {
   
   const {user} = ChatState();
   const navigate = useNavigate();
+  useEffect(()=>{        
+    if(!user){
+      navigate("/signIn");
+    }
+  },[navigate, user]);
   const logout = () => {
     localStorage.removeItem("userInfo");
+    console.log("logout");
     navigate("/signIn")
   }
   return (
