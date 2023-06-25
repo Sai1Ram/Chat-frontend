@@ -4,6 +4,14 @@ import { ChatState } from "../../Context/ChatProvider";
 const api = process.env.REACT_APP_API;      // backend api 
 const Friends = ({ friend, friendChat }) => {
   const {user, setSelectedChat, setSelectedChatMessage} = ChatState();      // context
+  const handleFilter = (users) => {
+    if(users._id !== user._id){
+      return users
+    }
+    else return
+  }
+  const recipient = friendChat ? friendChat.users.filter(handleFilter) : "";
+  
   const openGroupChat = async ()=>{
     console.log("group");
   }
@@ -17,7 +25,7 @@ const Friends = ({ friend, friendChat }) => {
     },body: JSON.stringify({ userId })
   });
   const chatData = await chatResponse.json();
-  console.log(chatData);
+  
 
 // fetching all the message of the chat
   const messageResponse = await fetch(`${api}/auth/message/${chatData._id}`, {method: "GET", headers:{
@@ -25,7 +33,7 @@ const Friends = ({ friend, friendChat }) => {
       Authorization: `Bearer ${token}`,
   }});
   const messageData = await messageResponse.json();
-  console.log(messageData);
+ 
   setSelectedChatMessage(messageData);
   setSelectedChat(chatData)
   }
@@ -37,16 +45,16 @@ const Friends = ({ friend, friendChat }) => {
         }else if(friendChat.isGroup){
           openGroupChat()
         }else{
-          openChat(friendChat.users[1]._id)
-          console.log(friendChat.users[1]._id);
+          openChat(recipient[0]._id)
         }
         }}>
         <div className="flex items-center justify-center h-8 w-8 bg-purple-200 rounded-full">
-        { friendChat && <img src={friendChat.users[1].pic} alt="" />}
+        { friendChat && <img src={recipient[0].pic} alt="" />}
         { friend && <img src={friend.pic} alt="" />}
         </div>
         {friend && <div className="ml-2 text-sm font-semibold">{friend.name}</div>}
-        {friendChat && <div className="ml-2 text-sm font-semibold">{friendChat.chatName}</div>}
+        {friendChat && <div className="ml-2 text-sm font-semibold">{
+          friendChat.isGroup ? friendChat.chatName : recipient[0].name}</div>}
       </button>
     </>
   );

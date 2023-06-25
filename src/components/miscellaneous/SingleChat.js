@@ -14,7 +14,7 @@ const SingleChat = () => {
               height={30}
               className="rounded-full"
             />
-            <h1>{selectedChat ? selectedChat.users[1].name : "name"}</h1>
+            <h1>{selectedChat ? selectedChat.chatName : "name"}</h1>
           </div>
         )}
       <div className="flex flex-col h-full overflow-x-auto mb-4">
