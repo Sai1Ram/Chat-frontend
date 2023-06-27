@@ -7,7 +7,12 @@ const api = process.env.REACT_APP_API;
 const SingleChat = () => {
   const { selectedChat, selectedChatMessage, setSelectedChatMessage, user } = ChatState();
   const [content, setContent] = useState("")
-  const socket = io(api);
+  const socket = io(api,{
+    withCredentials: true,
+    extraHeaders: {
+      "my-custom-header": "abcd"
+    }
+  });
   useEffect(()=>{
     socket.on("message recieved", (newMessage)=>{
       console.log(newMessage);

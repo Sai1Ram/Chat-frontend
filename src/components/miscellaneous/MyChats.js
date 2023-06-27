@@ -5,7 +5,12 @@ import {io} from 'socket.io-client'
 const api = process.env.REACT_APP_API;      // backend api 
 const Friends = ({ friend, friendChat }) => {
   const {user, setSelectedChat, setSelectedChatMessage} = ChatState();      // context
-  const socket = io(api);
+  const socket = io(api,{
+    withCredentials: true,
+    extraHeaders: {
+      "my-custom-header": "abcd"
+    }
+  });
   const handleFilter = (users) => {
     if(users._id !== user._id){
       return users
