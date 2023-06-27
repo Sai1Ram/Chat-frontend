@@ -1,36 +1,62 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MessCompo from "./MessCompo";
 import { ChatState } from "../../Context/ChatProvider";
+import { io } from "socket.io-client";
+
+const api = process.env.REACT_APP_API;
 const SingleChat = () => {
-  const { selectedChat, selectedChatMessage } = ChatState();
+  const { selectedChat, selectedChatMessage, setSelectedChatMessage, user } = ChatState();
+  const [content, setContent] = useState("")
+  const socket = io(api);
+  useEffect(()=>{
+    socket.on("message recieved", (newMessage)=>{
+      console.log(newMessage);
+      setSelectedChatMessage([...selectedChatMessage, newMessage])
+    })
+  })
+  const handleSend = async () => {
+
+    const token = user.token;
+    const response = await fetch(`${api}/auth/message/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ content: content, chatId: selectedChat._id }),
+    });
+    const data = await response.json();
+    setSelectedChatMessage((prevMessages) => [...prevMessages, data])
+    socket.emit("new message", data)
+    setContent("");
+  };
   return (
     <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-80 p-4 w-full">
-        {selectedChat && (
-          <div className="header bg-gray-400 p-2 rounded-lg flex gap-2 w-full">
-            <img
-              src={selectedChat.users[1].pic}
-              alt=""
-              width={30}
-              height={30}
-              className="rounded-full"
-            />
-            <h1>{selectedChat ? selectedChat.chatName : "name"}</h1>
-          </div>
-        )}
+      {selectedChat && (
+        <div className="header bg-gray-400 p-2 rounded-lg flex gap-2 w-full">
+          <img
+            src={selectedChat.users[1].pic}
+            alt=""
+            width={30}
+            height={30}
+            className="rounded-full"
+          />
+          <h1>{selectedChat ? selectedChat.chatName : "name"}</h1>
+        </div>
+      )}
       <div className="flex flex-col h-full overflow-x-auto mb-4">
         <div className="flex flex-col h-full">
           <div className="grid grid-cols-12 gap-y-2">
-            {selectedChatMessage.map((value, index)=>{
-              return(
+            {selectedChatMessage.map((value, index) => {
+              return (
                 <MessCompo
-                key={index}
-                message={value.content}
-                left={true}
-                right={false}
+                  key={index}
+                  message={value.content}
+                  left={value.sender._id === user._id ? false : true}
+                  right={value.sender._id === user._id ? true : false}
                 />
-                )
+              );
             })}
-            
           </div>
         </div>
       </div>
@@ -58,6 +84,8 @@ const SingleChat = () => {
             <input
               type="text"
               className="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
+              value={content}
+              onChange={(e)=>{setContent(e.target.value)}}
             />
             <button className="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600">
               <svg
@@ -78,7 +106,10 @@ const SingleChat = () => {
           </div>
         </div>
         <div className="ml-4">
-          <button className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0">
+          <button
+            className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0"
+            onClick={handleSend}
+          >
             <span>Send</span>
             <span className="ml-2">
               <svg

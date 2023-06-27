@@ -1,9 +1,11 @@
 import React from "react";
 import { ChatState } from "../../Context/ChatProvider";
+import {io} from 'socket.io-client'
 
 const api = process.env.REACT_APP_API;      // backend api 
 const Friends = ({ friend, friendChat }) => {
   const {user, setSelectedChat, setSelectedChatMessage} = ChatState();      // context
+  const socket = io(api);
   const handleFilter = (users) => {
     if(users._id !== user._id){
       return users
@@ -25,7 +27,7 @@ const Friends = ({ friend, friendChat }) => {
     },body: JSON.stringify({ userId })
   });
   const chatData = await chatResponse.json();
-  
+  socket.emit("join chat", chatData)
 
 // fetching all the message of the chat
   const messageResponse = await fetch(`${api}/auth/message/${chatData._id}`, {method: "GET", headers:{

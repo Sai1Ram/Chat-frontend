@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import MyChats from "./MyChats";
 import { ChatState } from "../../Context/ChatProvider";
 
+
 const api = process.env.REACT_APP_API;
 const SideBar = () => {
   const { user } = ChatState();
   const [searchData, setSearchData] = useState([]);
   const [allFriend, setAllFriend] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  // const [socketConnection, setSocketConnection] = useState(false);
 
   useEffect(() => {
     const fetchAllChatUser = async () => {
