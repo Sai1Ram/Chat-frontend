@@ -1,24 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import MessCompo from "./MessCompo";
 import { ChatState } from "../../Context/ChatProvider";
-import { io } from "socket.io-client";
 
 const api = process.env.REACT_APP_API;
 const SingleChat = () => {
   const { selectedChat, selectedChatMessage, setSelectedChatMessage, user } = ChatState();
   const [content, setContent] = useState("")
-  const socket = io(api,{
-    withCredentials: true,
-    extraHeaders: {
-      "my-custom-header": "abcd"
-    }
-  });
-  useEffect(()=>{
-    socket.on("message recieved", (newMessage)=>{
-      console.log(newMessage);
-      setSelectedChatMessage([...selectedChatMessage, newMessage])
-    })
-  })
+
   const handleSend = async () => {
 
     const token = user.token;
@@ -32,7 +20,6 @@ const SingleChat = () => {
     });
     const data = await response.json();
     setSelectedChatMessage((prevMessages) => [...prevMessages, data])
-    socket.emit("new message", data)
     setContent("");
   };
   return (

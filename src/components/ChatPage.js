@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-
 import SideBar from "./miscellaneous/SideBar";
 import { ChatState } from "../Context/ChatProvider";
 import SingleChat from "./miscellaneous/SingleChat";

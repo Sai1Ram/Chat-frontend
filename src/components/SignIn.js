@@ -44,7 +44,7 @@ function SignIn() {
 
   // --------------------------- STATE HOOKS ---------------------------
 
-  const [toast, setToast] = useState({status_code: 0, message: "", isToast: false});
+  const [toast, setToast] = useState({});
   const [show, setShow] = useState(false);
 
 
@@ -68,9 +68,9 @@ function SignIn() {
 
   // --------------------------- FUNCTION FOR TOAST DISAPPEARING  ---------------------------
 
-  setTimeout(() => {
-    if (toast) setToast(false);
-  }, 3000);
+  // setTimeout(() => {
+  //   if (toast) setToast({...toast, isToast: false});
+  // }, 3000);
 
  // --------------------------- FUNCTION FOR SIGN IN ---------------------------
 
@@ -80,15 +80,22 @@ function SignIn() {
   const response = await fetch(`${api}/auth/user/signIn`, {method: "POST", headers: {
     "Content-Type": "application/json",
   }, body: JSON.stringify(submit.userData)});
-  console.log(api);
+  
   const data = await response.json();
   if(response.status === 200)  localStorage.setItem("userInfo", JSON.stringify(data));
+  else{
+    setToast(prev => {
+      return ({...prev, isToast: true})
+    })
+    console.log(toast);
+      
+  }
   dispatch({ type: "submitClick", payload: false });
   dispatch({
     type: "clearUserData",
   });
   navigate('/chats');
-  // setToast({isToast: true, status_code: response.status, message: data.message});
+  
 } catch (error) {
   console.log(error);
 }

@@ -10,7 +10,6 @@ const SideBar = () => {
   const [allFriend, setAllFriend] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // const [socketConnection, setSocketConnection] = useState(false);
 
   useEffect(() => {
     const fetchAllChatUser = async () => {
