@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import MyChats from "./MyChats";
 import { ChatState } from "../../Context/ChatProvider";
+import { useSocket } from "../../Context/SocketProvider";
 
 
 const api = process.env.REACT_APP_API;
 const SideBar = () => {
   const { user } = ChatState();
+  const socket = useSocket();
   const [searchData, setSearchData] = useState([]);
   const [allFriend, setAllFriend] = useState([]);
   const [isLoading, setIsLoading] = useState(false);

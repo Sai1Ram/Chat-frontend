@@ -1,11 +1,12 @@
 import React from "react";
 import { ChatState } from "../../Context/ChatProvider";
+import { useSocket } from "../../Context/SocketProvider";
 
 
 const api = process.env.REACT_APP_API;      // backend api 
 const Friends = ({ friend, friendChat }) => {
   const {user, setSelectedChat, setSelectedChatMessage} = ChatState();      // context
-
+  const socket = useSocket();                                               // socket context
   const handleFilter = (users) => {
     if(users._id !== user._id){
       return users
@@ -38,6 +39,7 @@ const Friends = ({ friend, friendChat }) => {
  
   setSelectedChatMessage(messageData);
   setSelectedChat(chatData)
+  socket.emit("join chat", chatData._id);   // joining the chat
   }
   return (
     <>
